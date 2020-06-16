@@ -7,7 +7,7 @@ N_x_target = 1200
 N_y_target = 1920
 
 # list of frames to pause video
-list_stop_frames = np.array([5, 200, 1000, 1500, 2500])
+list_stop_frames = np.array([5, 200, 500])
 
 # canvas to put videos on
 frame = np.zeros((N_x_target, N_y_target, 3), dtype=np.uint8)
@@ -35,7 +35,7 @@ stopped = False
 while(True):
   # get video frame (index)
   current_frame_video = int(cap.get(1))
-  
+
   # get pressed keys
   getKey = cv2.waitKey(50)
   
@@ -48,18 +48,17 @@ while(True):
     print("stopped - started")
   elif getKey & 0xFF == 2:
     # left (back) key
-    previous_stop_key = list_stop_frames[np.less(list_stop_frames, current_frame_video)][-1]
-    print(current_frame_video, np.less(list_stop_frames, current_frame_video), previous_stop_key)
-    if previous_stop_key >= 0:
-      cap.set(1, previous_stop_key)
-    else:
-      cap.set(1, 0)
+    previous_stop_key = list_stop_frames[np.less(list_stop_frames, current_frame_video)]
+    if previous_stop_key.size > 0:
+      cap.set(1, previous_stop_key[-1])
     stopped = True
-    print("left")
+
   elif getKey & 0xFF == 3:
     # right (forward) key
+    next_stop_key = list_stop_frames[np.greater(list_stop_frames, current_frame_video)]
+    if next_stop_key.size > 0:
+      cap.set(1, next_stop_key[0])
     stopped = True
-    print("right")
 
   if not stopped:
     # get next video 
