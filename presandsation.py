@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import sys
+import imageio
 
 # target resolution
 N_x_target = 1200
@@ -34,7 +35,7 @@ stopped = False
 
 def keyPress(stopped, current_frame_video):
     # get pressed keys
-    getKey = cv2.waitKey(50)
+    getKey = cv2.waitKey(25)
 
     if getKey & 0xFF == ord('q'):
         # press "q" key to exit program
@@ -57,6 +58,21 @@ def keyPress(stopped, current_frame_video):
             cap.set(1, next_stop_key[0])
         stopped = True
     return stopped
+
+
+stopped = True
+while(stopped):
+    image = imageio.imread("../fig.png")
+    # get image shape
+    print(np.shape(image))
+    N_x_image, N_y_image, _ = np.shape(image)
+    # place image in full frame
+    id_x = (N_x_target - N_x_image) // 2
+    id_y = (N_y_target - N_y_image) // 2
+    frame[id_x:id_x+N_x_image, id_y:id_y+N_y_image, :] = image[:, :, :3]  # ignore 4th channal (alpha)
+    # plot frame (full canvas)
+    stopped = keyPress(stopped, None)
+    cv2.imshow('Frame', frame)
 
 
 while(True):
