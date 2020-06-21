@@ -69,7 +69,8 @@ while(stopped):
     # place image in full frame
     id_x = (N_x_target - N_x_image) // 2
     id_y = (N_y_target - N_y_image) // 2
-    frame[id_x:id_x+N_x_image, id_y:id_y+N_y_image, :] = image[:, :, :3]  # ignore 4th channal (alpha)
+    # need to invert RGB color channels here, ignore 4th channal (alpha) if it exists
+    frame[id_x:id_x+N_x_image, id_y:id_y+N_y_image, :] = image[:, :, 0:3:-1]
     # plot frame (full canvas)
     stopped = keyPress(stopped, None)
     cv2.imshow('Frame', frame)
