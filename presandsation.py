@@ -8,13 +8,13 @@ N_x_target = 1200
 N_y_target = 1920
 
 # list of frames to pause video
-list_stop_frames = np.array([5, 200, 500])
+list_stop_frames = np.array([5, 100, 250])
 
 # canvas to put videos on
 frame = np.zeros((N_x_target, N_y_target, 3), dtype=np.uint8)
 
 # reate openCV VideoCapture input for video file
-cap = cv2.VideoCapture('../test.mp4')
+cap = cv2.VideoCapture('./media/test.mp4')
 frame_count_video = int(cap.get(7))  # number of frames in video
 print("total frames:", frame_count_video)
 
@@ -62,7 +62,7 @@ def keyPress(stopped, current_frame_video):
 
 stopped = True
 while(stopped):
-    image = imageio.imread("../fig.png")
+    image = imageio.imread("./media/test.png")
     # get image shape
     print(np.shape(image))
     N_x_image, N_y_image, _ = np.shape(image)
